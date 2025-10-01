@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     kotlin("jvm") version "2.0.20"
-    id("com.gradleup.shadow") version "8.3.3"
+    id("com.gradleup.shadow") version "8.3.8"
 }
 
 group = "org.koitharu"
@@ -18,7 +18,9 @@ tasks.withType<ShadowJar> {
     archiveBaseName = "kotatsu-dl"
     archiveClassifier = ""
     archiveVersion = ""
-    minimize()
+    minimize {
+        exclude(dependency("org.openjdk.nashorn:.*:.*"))
+    }
 }
 
 repositories {
@@ -34,7 +36,7 @@ dependencies {
     implementation("com.github.KotatsuApp:kotatsu-parsers:16b8bf9328")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okio:okio:3.11.0")
-    implementation("io.webfolder:quickjs:1.1.0")
+    implementation("org.openjdk.nashorn:nashorn-core:15.6")
     implementation("org.json:json:20240303")
     implementation("me.tongfei:progressbar:0.10.1")
     implementation("androidx.collection:collection:1.5.0")
