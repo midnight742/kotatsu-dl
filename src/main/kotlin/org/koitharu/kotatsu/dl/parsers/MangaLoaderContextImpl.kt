@@ -45,9 +45,9 @@ class MangaLoaderContextImpl : MangaLoaderContext() {
 
     override suspend fun evaluateJs(baseUrl: String, script: String): String? {
         return runInterruptible(Dispatchers.Default) {
-            QuackContext.create().use {
-                it.evaluate(script)?.toString()
-            }
+            val nashorn = scriptEngineManager.getEngineByName("nashorn")
+                ?: error("JavaScript engine is not available")
+            nashorn.eval(script)?.toString()?.takeUnless { it.isEmpty() || it == "null" }
         }
     }
 
@@ -67,4 +67,5 @@ class MangaLoaderContextImpl : MangaLoaderContext() {
     override fun createBitmap(width: Int, height: Int): Bitmap {
         return BitmapImpl(BufferedImage(width, height, BufferedImage.TYPE_INT_RGB))
     }
+
 }
